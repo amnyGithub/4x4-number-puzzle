@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Shadow Echo — Number Arcade</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;color:#dff;font-family:system-ui,sans-serif;touch-action:none}
+canvas{display:block;width:100%;height:100%;background:#000}
+.hud{position:fixed;top:0;left:0;right:0;padding:18px;pointer-events:none;display:flex;justify-content:space-between;text-shadow:0 0 12px #7ff}
+.hud strong{font-size:clamp(18px,4vw,28px);letter-spacing:3px}.hud span{opacity:.75}
+.help{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);color:#789;pointer-events:none;text-align:center;font-size:13px}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<div class="hud"><strong>SHADOW ECHO</strong><span id="score">Echoes: 0</span></div>
+<div class="help">Tap or click to send a sonar pulse</div>
+<script>
+'use strict';
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d',{alpha:false}),scoreEl=document.getElementById('score');
+let W=0,H=0,dpr=1,pulses=[],targets=[],reveals=[],score=0,audioCtx=null;
+const TAU=Math.PI*2;
+function resize(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=Math.floor(W*dpr);canvas.height=Math.floor(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);makeTargets()}
+function makeTargets(){targets=[];const count=Math.max(5,Math.min(11,Math.floor(W*H/100000)));for(let i=0;i<count;i++){let x,y,r=10+Math.random()*16,ok=false;for(let n=0;n<40&&!ok;n++){x=35+Math.random()*(W-70);y=75+Math.random()*(H-120);ok=targets.every(t=>Math.hypot(t.x-x,t.y-y)>80)}if(ok)targets.push({x,y,r,hit:false})}}
+function ensureAudio(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume()}
+function ping(){ensureAudio();const o=audioCtx.createOscillator(),g=audioCtx.createGain(),now=audioCtx.currentTime;o.type='sine';o.frequency.setValueAtTime(800,now);o.frequency.exponentialRampToValueAtTime(200,now+.3);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.16,now+.015);g.gain.exponentialRampToValueAtTime(.0001,now+.3);o.connect(g).connect(audioCtx.destination);o.start(now);o.stop(now+.31)}
+function chime(){ensureAudio();const now=audioCtx.currentTime;[660,990].forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.0001,now+i*.06);g.gain.exponentialRampToValueAtTime(.12,now+i*.06+.01);g.gain.exponentialRampToValueAtTime(.0001,now+i*.06+.28);o.connect(g).connect(audioCtx.destination);o.start(now+i*.06);o.stop(now+i*.06+.3)})}
+function fire(x,y){ping();pulses.push({x,y,t:performance.now(),hit:new Set()});scoreEl.textContent='Echoes: '+score}
+function pointer(e){e.preventDefault();const r=canvas.getBoundingClientRect();fire(e.clientX-r.left,e.clientY-r.top)}
+canvas.addEventListener('pointerdown',pointer,{passive:false});addEventListener('resize',resize);resize();
+function targetPath(t){ctx.beginPath();ctx.moveTo(t.x,t.y-t.r);for(let i=1;i<=6;i++){const a=-Math.PI/2+i*TAU/6;const rr=i%2?t.r*.48:t.r;ctx.lineTo(t.x+Math.cos(a)*rr,t.y+Math.sin(a)*rr)}ctx.closePath()}
+function frame(now){ctx.clearRect(0,0,W,H);ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+for(let i=pulses.length-1;i>=0;i--){const p=pulses[i],age=(now-p.t)/1000;if(age>=1.5){pulses.splice(i,1);continue}const q=age/1.5,r=q*Math.hypot(W,H),alpha=1-q;ctx.beginPath();ctx.arc(p.x,p.y,r,0,TAU);ctx.strokeStyle=`rgba(100,240,255,${alpha*.8})`;ctx.lineWidth=2;ctx.shadowBlur=18;ctx.shadowColor='#55eaff';ctx.stroke();ctx.shadowBlur=0;
+for(const t of targets){if(p.hit.has(t))continue;const d=Math.hypot(t.x-p.x,t.y-p.y);if(Math.abs(d-r)<=Math.max(5,t.r)){p.hit.add(t);t.hit=true;reveals.push({t,until:now+700});score++;chime();scoreEl.textContent='Echoes: '+score}}
+}
+for(let i=reveals.length-1;i>=0;i--){const v=reveals[i],left=v.until-now;if(left<=0){reveals.splice(i,1);continue}const a=left/700;ctx.save();ctx.globalAlpha=a;ctx.strokeStyle='#9ff';ctx.shadowColor='#7ff';ctx.shadowBlur=25;ctx.lineWidth=2;targetPath(v.t);ctx.stroke();ctx.restore()}
+ctx.shadowBlur=0;requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
