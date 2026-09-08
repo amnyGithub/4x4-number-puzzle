@@ -1,12 +1,13 @@
 name: Install universal account banner
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 permissions:
   contents: write
 jobs:
   install:
-    if: ${{ !contains(github.event.head_commit.message, '[account-banner]') }}
+    if: "!contains(github.event.head_commit.message, '[account-banner]')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,15 +16,15 @@ jobs:
         run: |
           set -e
           for f in *.html; do
-            [ "$f" = "profile.html" ] && continue
+            if [ "$f" = "profile.html" ]; then continue; fi
             if ! grep -q 'src="account.js"' "$f"; then
               python - "$f" <<'PY'
 import pathlib,sys
-p=pathlib.Path(sys.argv[1]); s=p.read_text()
+p=pathlib.Path(sys.argv[1])
+s=p.read_text()
 needle='</body>'
 if needle in s:
-    s=s.replace(needle,'<script type="module" src="account.js"></script></body>',1)
-    p.write_text(s)
+    p.write_text(s.replace(needle,'<script type="module" src="account.js"></script></body>',1))
 PY
             fi
           done
