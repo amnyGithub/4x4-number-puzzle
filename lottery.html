@@ -6,16 +6,17 @@
 <meta name="theme-color" content="#07111f">
 <title>Quick Pick 100 — Number Arcade</title>
 <style>
-:root{--bg:#07111f;--panel:#101d31;--panel2:#0b1728;--line:#ffffff18;--text:#f8fafc;--muted:#94a3b8;--green:#166534;--red:#991b1b;--gold:#ca8a04;--yellow:#fbbf24;--winner:#f59e0b}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);background:radial-gradient(circle at 15% 0,#14532d,transparent 30%),radial-gradient(circle at 95% 10%,#7c2d12,transparent 30%),var(--bg);min-height:100vh}.wrap{width:min(760px,94%);margin:auto;padding:14px 0 44px}.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.brand{font-size:1.2rem;font-weight:950;letter-spacing:.5px}.brand span{color:var(--yellow)}.subtitle{font-size:.72rem;color:var(--muted);margin-top:1px}.actions{display:flex;gap:6px}.btn{border:0;border-radius:10px;padding:9px 12px;font-weight:850;cursor:pointer;background:var(--yellow);color:#111827;text-decoration:none;font-size:.86rem}.secondary{background:#334155;color:#fff}.statusbar{background:#101d31eF;border:1px solid var(--line);border-radius:16px;padding:10px;margin-bottom:10px;position:sticky;top:8px;z-index:5;backdrop-filter:blur(12px)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.stat{background:var(--panel2);border-radius:10px;padding:8px 6px;text-align:center;min-width:0}.stat span{display:block;color:var(--muted);font-size:.67rem;text-transform:uppercase;letter-spacing:.5px}.stat b{display:block;font-size:1rem;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.notice{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:.82rem;color:var(--yellow);min-height:20px}.dot-live{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px #22c55e22;flex:none}.board-card{background:#101d31f5;border:1px solid var(--line);border-radius:20px;padding:12px;margin-bottom:10px}.board-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:0 2px 9px}.board-head h1{font-size:1.35rem;margin:0}.board-head p{margin:2px 0 0;color:var(--muted);font-size:.75rem}.count{font-size:.78rem;color:var(--muted);white-space:nowrap}.grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px}.ticket{width:100%;aspect-ratio:1;border:1px solid #22c55e55;border-radius:9px;font-weight:900;font-size:clamp(.68rem,2.6vw,.88rem);cursor:pointer;background:var(--green);color:#dcfce7;transition:transform .08s,filter .08s}.ticket:not(:disabled):active{transform:scale(.94);filter:brightness(1.2)}.ticket.sold{background:var(--red);border-color:#ef444444;color:#fee2e2;cursor:not-allowed}.ticket.mine{background:var(--gold);border-color:#facc15;color:#111827}.ticket:disabled{opacity:1}.legend{display:flex;gap:9px 15px;flex-wrap:wrap;margin:10px 2px 2px;color:var(--muted);font-size:.7rem}.legend-item{display:inline-flex;align-items:center;gap:5px}.dot{width:10px;height:10px;border-radius:3px;display:inline-block}.buymsg{min-height:21px;text-align:center;margin:8px 0 0;color:var(--yellow);font-size:.82rem}.section{background:#101d31eF;border:1px solid var(--line);border-radius:17px;margin-top:10px;overflow:hidden}.section summary{cursor:pointer;list-style:none;padding:14px;font-weight:850}.section summary::-webkit-details-marker{display:none}.section summary:after{content:'＋';float:right;color:var(--muted)}.section[open] summary:after{content:'−'}.section-body{padding:0 14px 14px;color:var(--muted);font-size:.86rem}.section-body p{margin:8px 0}.mytickets{display:flex;gap:6px;flex-wrap:wrap}.chip{background:#334155;color:#fff;padding:6px 9px;border-radius:8px;font-weight:800;font-size:.8rem}.table-wrap{overflow-x:auto}.table{width:100%;border-collapse:collapse;min-width:540px}.table th,.table td{text-align:left;padding:9px;border-bottom:1px solid var(--line);font-size:.78rem}.table th{color:var(--muted);font-weight:700}.record{color:#fbbf24;text-decoration:none}.fineprint{font-size:.68rem;color:#64748b;text-align:center;margin:15px 5px}.modal{display:none;position:fixed;inset:0;background:#000c;place-items:center;padding:18px;z-index:20}.modal-card{background:#101d31;border:1px solid var(--line);border-radius:18px;padding:18px;width:min(420px,100%);box-shadow:0 20px 70px #0008}.modal-card h2{margin:0 0 10px}.input{width:100%;padding:11px;margin:5px 0;background:#07111f;color:#fff;border:1px solid #475569;border-radius:10px;outline:none}.modal-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px}.msg{min-height:22px;color:var(--yellow);font-size:.8rem}.progress{height:4px;background:#07111f;border-radius:99px;overflow:hidden;margin-top:7px;display:none}.progress i{display:block;height:100%;background:var(--yellow);width:0%;transition:width .3s}
-@media(max-width:430px){.wrap{width:96%;padding-top:10px}.brand{font-size:1.05rem}.btn{padding:8px 9px}.stats{gap:4px}.stat{padding:7px 3px}.stat b{font-size:.88rem}.grid{gap:3px}.ticket{border-radius:6px;font-size:.67rem}.board-card{padding:9px;border-radius:17px}.board-head h1{font-size:1.18rem}}
+:root{--bg:#07111f;--panel:#101d31;--panel2:#0b1728;--line:#ffffff18;--text:#f8fafc;--muted:#94a3b8;--green:#166534;--red:#991b1b;--gold:#ca8a04;--yellow:#fbbf24;--winner:#f59e0b;--blue:#2563eb}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);background:radial-gradient(circle at 15% 0,#14532d,transparent 30%),radial-gradient(circle at 95% 10%,#7c2d12,transparent 30%),var(--bg);min-height:100vh}.wrap{width:min(760px,94%);margin:auto;padding:14px 0 44px}.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.brand{font-size:1.2rem;font-weight:950;letter-spacing:.5px}.brand span{color:var(--yellow)}.subtitle{font-size:.72rem;color:var(--muted);margin-top:1px}.actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}.btn{border:0;border-radius:10px;padding:9px 12px;font-weight:850;cursor:pointer;background:var(--yellow);color:#111827;text-decoration:none;font-size:.86rem}.secondary{background:#334155;color:#fff}.wallet{display:none;align-items:center;gap:6px;background:#0b1728;border:1px solid #fbbf2444;border-radius:10px;padding:7px 10px;color:#fff;font-size:.78rem;font-weight:850}.wallet strong{color:var(--yellow);font-size:.9rem}.statusbar{background:#101d31eF;border:1px solid var(--line);border-radius:16px;padding:10px;margin-bottom:10px;position:sticky;top:8px;z-index:5;backdrop-filter:blur(12px)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.stat{background:var(--panel2);border-radius:10px;padding:8px 6px;text-align:center;min-width:0}.stat span{display:block;color:var(--muted);font-size:.67rem;text-transform:uppercase;letter-spacing:.5px}.stat b{display:block;font-size:1rem;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.notice{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:.82rem;color:var(--yellow);min-height:20px}.dot-live{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px #22c55e22;flex:none}.board-card{background:#101d31f5;border:1px solid var(--line);border-radius:20px;padding:12px;margin-bottom:10px}.board-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:0 2px 9px}.board-head h1{font-size:1.35rem;margin:0}.board-head p{margin:2px 0 0;color:var(--muted);font-size:.75rem}.count{font-size:.78rem;color:var(--muted);white-space:nowrap}.grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px}.ticket{width:100%;aspect-ratio:1;border:1px solid #22c55e55;border-radius:9px;font-weight:900;font-size:clamp(.68rem,2.6vw,.88rem);cursor:pointer;background:var(--green);color:#dcfce7;transition:transform .08s,filter .08s}.ticket:not(:disabled):active{transform:scale(.94);filter:brightness(1.2)}.ticket.sold{background:var(--red);border-color:#ef444444;color:#fee2e2;cursor:not-allowed}.ticket.mine{background:var(--gold);border-color:#facc15;color:#111827}.ticket:disabled{opacity:1}.legend{display:flex;gap:9px 15px;flex-wrap:wrap;margin:10px 2px 2px;color:var(--muted);font-size:.7rem}.legend-item{display:inline-flex;align-items:center;gap:5px}.dot{width:10px;height:10px;border-radius:3px;display:inline-block}.buymsg{min-height:21px;text-align:center;margin:8px 0 0;color:var(--yellow);font-size:.82rem}.section{background:#101d31eF;border:1px solid var(--line);border-radius:17px;margin-top:10px;overflow:hidden;scroll-margin-top:75px}.section summary{cursor:pointer;list-style:none;padding:14px;font-weight:850}.section summary::-webkit-details-marker{display:none}.section summary:after{content:'＋';float:right;color:var(--muted)}.section[open] summary:after{content:'−'}.section-body{padding:0 14px 14px;color:var(--muted);font-size:.86rem}.section-body p{margin:8px 0}.mytickets{display:flex;gap:6px;flex-wrap:wrap}.chip{background:#334155;color:#fff;padding:6px 9px;border-radius:8px;font-weight:800;font-size:.8rem}.wallet-large{display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(135deg,#0b1728,#172554);border:1px solid #fbbf2438;border-radius:14px;padding:12px;margin-bottom:12px}.wallet-large span{display:block;color:var(--muted);font-size:.7rem;text-transform:uppercase}.wallet-large b{display:block;color:var(--yellow);font-size:1.35rem;margin-top:2px}.wallet-note{font-size:.7rem;color:var(--muted)}.table-wrap{overflow-x:auto}.table{width:100%;border-collapse:collapse;min-width:540px}.table th,.table td{text-align:left;padding:9px;border-bottom:1px solid var(--line);font-size:.78rem}.table th{color:var(--muted);font-weight:700}.record{color:#fbbf24;text-decoration:none}.fineprint{font-size:.68rem;color:#64748b;text-align:center;margin:15px 5px}.modal{display:none;position:fixed;inset:0;background:#000c;place-items:center;padding:18px;z-index:20}.modal-card{background:#101d31;border:1px solid var(--line);border-radius:18px;padding:18px;width:min(420px,100%);box-shadow:0 20px 70px #0008}.modal-card h2{margin:0 0 10px}.input{width:100%;padding:11px;margin:5px 0;background:#07111f;color:#fff;border:1px solid #475569;border-radius:10px;outline:none}.modal-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px}.msg{min-height:22px;color:var(--yellow);font-size:.8rem}.progress{height:4px;background:#07111f;border-radius:99px;overflow:hidden;margin-top:7px;display:none}.progress i{display:block;height:100%;background:var(--yellow);width:0%;transition:width .3s}
+@media(max-width:520px){.wallet{display:flex}.top{align-items:flex-start}.actions .wallet{order:-1}.actions .btn{padding:8px 9px}.stats{gap:4px}.stat{padding:7px 3px}.stat b{font-size:.88rem}}
+@media(max-width:430px){.wrap{width:96%;padding-top:10px}.brand{font-size:1.05rem}.grid{gap:3px}.ticket{border-radius:6px;font-size:.67rem}.board-card{padding:9px;border-radius:17px}.board-head h1{font-size:1.18rem}.wallet-large b{font-size:1.15rem}}
 </style>
 </head>
 <body>
 <main class="wrap">
   <header class="top">
     <div><div class="brand">NUMBER<span>ARCADE</span></div><div class="subtitle">QUICK PICK 100 · VIRTUAL CREDITS</div></div>
-    <div class="actions"><a class="btn secondary" href="index.html">Home</a><button class="btn secondary" id="auth">Log in</button></div>
+    <div class="actions"><div class="wallet" id="walletTop" aria-label="Virtual credit balance">💰 <strong id="walletTopBalance">—</strong> cr</div><a class="btn secondary" href="index.html">Home</a><button class="btn secondary" id="auth">Log in</button></div>
   </header>
 
   <section class="statusbar" aria-label="Current lottery status">
@@ -44,9 +45,12 @@
     <p id="msg" class="buymsg"></p>
   </section>
 
-  <details class="section">
+  <details class="section" id="myTicketsSection">
     <summary>🎟️ My tickets <span id="mineCount" class="count"></span></summary>
-    <div class="section-body"><div id="mine" class="mytickets"><span>Sign in to see your tickets.</span></div></div>
+    <div class="section-body">
+      <div class="wallet-large"><div><span>My virtual balance</span><b id="walletLargeBalance">— credits</b></div><div class="wallet-note">Used for Quick Pick purchases</div></div>
+      <div id="mine" class="mytickets"><span>Sign in to see your tickets.</span></div>
+    </div>
   </details>
 
   <details class="section">
@@ -84,6 +88,12 @@
 import{createClient}from'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const sb=createClient('https://uesymduyouwdrjedzqfr.supabase.co','sb_publishable_6uWbMVr4O7NEfPLFBPpejQ_rnpcR2M2'),$=x=>document.getElementById(x),fmt=n=>Number(n||0).toLocaleString();
 let round=null,signup=false,session=null,countdownTimer=null;
+async function loadWallet(){
+  if(!session){$('walletTop').style.display='none';$('walletTopBalance').textContent='—';$('walletLargeBalance').textContent='Sign in to view balance';return}
+  const{data,error}=await sb.from('wallets').select('balance').eq('user_id',session.user.id).maybeSingle();
+  if(error){$('walletTop').style.display='flex';$('walletTopBalance').textContent='—';$('walletLargeBalance').textContent='Balance unavailable';return}
+  const balance=Number(data?.balance||0);$('walletTop').style.display='flex';$('walletTopBalance').textContent=fmt(balance);$('walletLargeBalance').textContent=fmt(balance)+' credits';
+}
 async function getRound(){
   let{data,error}=await sb.from('lottery_rounds').select('*').in('status',['open','sold_out','countdown','manual_pending']).order('id',{ascending:false}).limit(1).maybeSingle();
   if(error){$('status').textContent=error.message;return}
@@ -97,13 +107,13 @@ async function render(){
   $('prize').textContent=fmt(p)+' cr';$('count').textContent=total+' numbers';
   if(countdownTimer){clearInterval(countdownTimer);countdownTimer=null}
   const updateStatus=()=>{
-    if(round.status==='open'){$('status').textContent='Choose an available number.';$('progress').style.display='none'}
+    if(round.status==='open'){$('status').textContent=session?'Choose an available number.':'Log in to choose a number.';$('progress').style.display='none'}
     else if(round.status==='countdown'){$('progress').style.display='block';const left=Math.max(0,Math.ceil((new Date(round.countdown_ends_at)-Date.now())/1000));$('status').textContent='Sold out · drawing in '+left+'s';const duration=Math.max(1,new Date(round.countdown_ends_at)-new Date(round.sold_out_at||Date.now()));const elapsed=Math.max(0,duration-left*1000);$('progressFill').style.width=Math.min(100,elapsed/duration*100)+'%';if(left<=0)getRound()}
     else if(round.status==='manual_pending'){$('status').textContent='Sold out · awaiting the official manual drawing.';$('progress').style.display='none'}
     else{$('status').textContent='Sold out · draw pending.';$('progress').style.display='none'}
   };
   updateStatus();if(round.status==='countdown')countdownTimer=setInterval(updateStatus,1000);
-  const own=new Set(tickets.filter(t=>t.user_id===session?.user?.id).map(t=>t.ticket_no));
+  const own=new Set(tickets.filter(t=>t.user_id===session?.user?.id).map(t=>Number(t.ticket_no)));
   const byNo=new Map(tickets.map(t=>[Number(t.ticket_no),t]));
   $('board').innerHTML=Array.from({length:total},(_,i)=>{const n=i+1,t=byNo.get(n),cl=t?(own.has(n)?'ticket mine':'ticket sold'):'ticket';return `<button class="${cl}" ${t?'disabled':''} data-n="${n}" aria-label="Ticket ${String(n).padStart(3,'0')}">${String(n).padStart(3,'0')}</button>`}).join('');
   document.querySelectorAll('.ticket:not(.sold):not(.mine)').forEach(b=>b.onclick=()=>buy(Number(b.dataset.n)));
@@ -111,11 +121,13 @@ async function render(){
 }
 async function buy(n){
   if(!session){openAuth();return}
-  if(!confirm('Buy ticket #'+String(n).padStart(3,'0')+' for '+round.ticket_price+' credits?'))return;
+  const price=Number(round.ticket_price||0),balanceText=$('walletTopBalance').textContent.replace(/,/g,'');
+  if(Number(balanceText)<price){$('msg').textContent='Insufficient virtual credits for this ticket.';return}
+  if(!confirm('Buy ticket #'+String(n).padStart(3,'0')+' for '+fmt(price)+' credits?'))return;
   $('msg').textContent='Purchasing ticket #'+String(n).padStart(3,'0')+'…';
   const{data,error}=await sb.rpc('buy_lottery_ticket',{p_ticket_no:n});
   $('msg').textContent=error?error.message:(data?.ok?'✓ Ticket #'+String(n).padStart(3,'0')+' purchased!':'Purchase complete.');
-  await getRound();loadHistory();
+  await loadWallet();await getRound();loadHistory();
 }
 async function loadHistory(){
   const{data,error}=await sb.from('lottery_draws').select('round_id,winning_ticket_no,prize_amount,published_at,draw_mode,video_url').order('published_at',{ascending:false}).limit(20);
@@ -128,7 +140,7 @@ $('modal').onclick=e=>{if(e.target===$('modal'))$('modal').style.display='none'}
 $('toggle').onclick=()=>{signup=!signup;$('ft').textContent=signup?'Create account':'Log in';$('submit').textContent=signup?'Sign up':'Log in';$('username').style.display=signup?'block':'none'};
 $('submit').onclick=async()=>{const email=$('email').value.trim(),password=$('password').value,username=$('username').value.trim();$('authmsg').textContent='Working…';const r=signup?await sb.auth.signUp({email,password,options:{data:{username}}}):await sb.auth.signInWithPassword({email,password});if(r.error){$('authmsg').textContent=r.error.message;return}$('modal').style.display='none';await init()};
 $('auth').onclick=async()=>{if(session){await sb.auth.signOut();await init()}else openAuth()};
-async function init(){session=(await sb.auth.getSession()).data.session;$('auth').textContent=session?'Log out':'Log in';await getRound();loadHistory()}
+async function init(){session=(await sb.auth.getSession()).data.session;$('auth').textContent=session?'Log out':'Log in';await loadWallet();await getRound();loadHistory()}
 sb.auth.onAuthStateChange(()=>setTimeout(init,0));init();setInterval(()=>{if(round?.status!=='countdown')getRound()},15000);
 </script>
 </body>
