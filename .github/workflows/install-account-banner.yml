@@ -1,35 +1,23 @@
 name: Install universal account banner
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 permissions:
   contents: write
 jobs:
   install:
-    if: "!contains(github.event.head_commit.message, '[account-banner]')"
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[account-banner]')"
     steps:
       - uses: actions/checkout@v4
-      - name: Add account layer to HTML pages
-        shell: bash
+      - name: Install banner script
         run: |
-          set -e
           for f in *.html; do
-            if [ "$f" = "profile.html" ]; then continue; fi
-            if ! grep -q 'src="account.js"' "$f"; then
-              python - "$f" <<'PY'
-import pathlib,sys
-p=pathlib.Path(sys.argv[1])
-s=p.read_text()
-needle='</body>'
-if needle in s:
-    p.write_text(s.replace(needle,'<script type="module" src="account.js"></script></body>',1))
-PY
+            if [ "$f" != "profile.html" ] && ! grep -q 'src="account.js"' "$f"; then
+              sed -i 's#</body>#<script type="module" src="account.js"></script></body>#' "$f"
             fi
           done
-      - name: Commit account layer
-        shell: bash
+      - name: Commit changes
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
