@@ -1,1 +1,121 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quick Pick Arcade</title><style>body{margin:0;font-family:system-ui,sans-serif;background:#07111f;color:#f8fafc}.wrap{width:min(1000px,94%);margin:auto;padding:30px 0 60px}.hero{padding:24px;border:1px solid #ffffff18;border-radius:24px;background:linear-gradient(135deg,#10233b,#111827);margin-bottom:18px}.hero h1{font-size:clamp(2rem,6vw,3.5rem);margin:0}.hero p{color:#94a3b8;max-width:650px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.card{background:#101d31;border:1px solid #ffffff18;border-radius:18px;padding:18px}.icon{font-size:2rem}.card h2{margin:8px 0 4px}.muted{color:#94a3b8}.meta{display:flex;gap:7px;flex-wrap:wrap;margin:13px 0}.chip{padding:5px 8px;border-radius:8px;background:#24344b;font-size:.75rem}.btn{display:inline-block;border:0;border-radius:10px;padding:10px 14px;background:#fbbf24;color:#111827;font-weight:900;text-decoration:none}.disabled{opacity:.5;pointer-events:none}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.home{color:#fbbf24;text-decoration:none;font-weight:800}</style></head><body><main class="wrap"><div class="top"><b>NUMBER<span style="color:#fbbf24">ARCADE</span></b><a class="home" href="index.html">Home</a></div><section class="hero"><h1>🎯 Quick Pick</h1><p>Choose your number-draw game. Each game has its own ticket size, price, draw speed and prize configuration. All balances are virtual game credits.</p></section><section id="games" class="grid"><div class="card"><div class="muted">Loading games…</div></div></section></main><script type="module">import{createClient}from'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';import'./account.js';const sb=createClient('https://uesymduyouwdrjedzqfr.supabase.co','sb_publishable_6uWbMVr4O7NEfPLFBPpejQ_rnpcR2M2');const icons={'quick-pick-10':'⚡','quick-pick-20':'🔥','quick-pick-50':'🎯','quick-pick-100':'💎','quick-pick-lucky-3':'🍀'};const order=['quick-pick-10','quick-pick-20','quick-pick-50','quick-pick-100','quick-pick-lucky-3'];const games=document.getElementById('games');const {data,error}=await sb.from('game_config').select('game,config').eq('scope','game').in('game',order);if(error){games.innerHTML='<div class="card">Unable to load Quick Pick games.</div>'}else{const map=Object.fromEntries((data||[]).map(x=>[x.game,x.config||{}]));games.innerHTML=order.map(code=>{const c=map[code]||{};const enabled=c.enabled!==false;const mode=c.mode||'pool';const link=mode==='pick3'?'#':`quick-pick-game.html?game=${encodeURIComponent(code)}`;const state=enabled&&link!=='#'?'Play now':'Coming soon';return `<article class="card"><div class="icon">${icons[code]||'🎲'}</div><h2>${c.title||code}</h2><div class="muted">${c.subtitle||'Number draw game'}</div><div class="meta">${mode==='pool'?`<span class="chip">${c.ticket_count||'—'} numbers</span><span class="chip">${Number(c.ticket_price||0).toLocaleString()} credits</span>`:'<span class="chip">3 digits</span><span class="chip">5 credits</span>'}</div><a class="btn ${enabled&&link!=='#'?'':'disabled'}" href="${link}">${state}</a></article>`}).join('')}</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quick Pick — Number Arcade</title>
+<style>
+:root{--bg:#06101d;--panel:#0d1b2d;--panel2:#101f33;--line:#ffffff16;--muted:#91a3b8;--gold:#fbbf24;--green:#22c55e;--red:#ef4444;--blue:#38bdf8}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at top,#122642 0,#06101d 48%);color:#f8fafc;min-height:100vh}.wrap{width:min(1080px,94%);margin:auto;padding:24px 0 60px}.hero{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:26px;padding:28px;background:linear-gradient(135deg,#102844,#0b1627 65%);box-shadow:0 18px 50px #0005}.hero:after{content:'🎯';position:absolute;right:24px;top:15px;font-size:6rem;opacity:.09}.eyebrow{color:var(--gold);font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-size:.75rem}.hero h1{font-size:clamp(2.1rem,7vw,4rem);margin:5px 0}.hero p{color:var(--muted);max-width:720px;margin:0;line-height:1.55}.bar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:16px 0}.home{color:var(--gold);font-weight:800;text-decoration:none}.tabs{display:flex;gap:8px;overflow:auto;padding:4px 2px 10px;scrollbar-width:thin}.tab{flex:0 0 auto;border:1px solid var(--line);background:#0b1829;color:#cbd5e1;border-radius:14px;padding:11px 15px;font-weight:900;cursor:pointer;white-space:nowrap}.tab.active{background:var(--gold);color:#111827;border-color:var(--gold)}.tab.disabled{opacity:.55}.panel{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:18px;margin-top:8px}.game-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}.title-row{display:flex;gap:12px;align-items:center}.game-icon{font-size:2.4rem}.game-head h2{margin:0;font-size:1.7rem}.muted{color:var(--muted)}.status{padding:6px 10px;border-radius:999px;font-size:.72rem;font-weight:950;white-space:nowrap;background:#334155}.status.live{background:#14532d;color:#bbf7d0}.status.soon{background:#713f12;color:#fde68a}.status.off{background:#3f3f46;color:#d4d4d8}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0}.stat{background:#081525;border:1px solid var(--line);border-radius:13px;padding:11px;text-align:center}.stat small{display:block;color:var(--muted);font-size:.68rem}.stat b{display:block;margin-top:3px}.progress{height:8px;background:#17263a;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:var(--gold);width:0}.play-note{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:14px 0;color:var(--muted);font-size:.85rem}.btn{border:0;border-radius:11px;padding:11px 15px;background:var(--gold);color:#111827;font-weight:950;cursor:pointer}.btn.secondary{background:#334155;color:#fff}.btn:disabled{opacity:.5;cursor:not-allowed}.board{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-top:14px}.ticket{aspect-ratio:1;border:1px solid #22c55e55;border-radius:9px;background:#14532d;color:#dcfce7;font-weight:950;cursor:pointer}.ticket.sold{background:#4c1d1d;color:#fecaca;border-color:#ef444444;cursor:not-allowed}.ticket.mine{background:#a16207;color:#fff7ed;border-color:#fbbf24}.ticket.winner{outline:2px solid #fbbf24}.legend{font-size:.72rem;color:var(--muted);margin-top:9px}.section-title{display:flex;justify-content:space-between;align-items:center;gap:10px}.section-title h3{margin:0}.mine-list,.results{display:grid;gap:8px;margin-top:12px}.mine-item,.result-item{display:flex;justify-content:space-between;gap:10px;align-items:center;background:#091728;border:1px solid var(--line);border-radius:13px;padding:11px 13px}.pill{font-size:.7rem;padding:4px 7px;border-radius:8px;background:#24344b;color:#cbd5e1}.empty{padding:28px 15px;text-align:center;color:var(--muted);border:1px dashed #ffffff22;border-radius:16px}.empty strong{display:block;color:#f8fafc;font-size:1.05rem;margin-bottom:5px}.coming{padding:34px 18px;text-align:center}.coming .big{font-size:3.5rem}.coming h2{margin:5px 0}.coming p{color:var(--muted);max-width:620px;margin:8px auto 18px}.coming-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px;margin-top:20px}.coming-card{background:#091728;border:1px solid var(--line);border-radius:14px;padding:13px;text-align:left}.coming-card b{display:block}.how{line-height:1.55;color:var(--muted)}.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.step{background:#091728;border:1px solid var(--line);border-radius:13px;padding:12px}.step b{display:block;color:var(--gold);margin-bottom:3px}.msg{text-align:center;min-height:22px;color:var(--gold);font-size:.86rem;margin:10px}.modal{display:none;position:fixed;inset:0;background:#000b;place-items:center;padding:18px;z-index:20}.modal.show{display:grid}.modal-card{width:min(430px,100%);background:#0e1c2f;border:1px solid #fbbf2450;border-radius:22px;padding:20px;box-shadow:0 25px 80px #0008}.modal-card h2{margin-top:0}.number{font-size:2.5rem;text-align:center;font-weight:950;color:var(--gold);margin:8px}.actions{display:flex;gap:8px;margin-top:16px}.actions>*{flex:1}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:1fr 1fr}.game-head{display:block}.status{display:inline-block;margin-top:10px}.board{grid-template-columns:repeat(5,1fr)}.hero{padding:22px}.hero:after{font-size:4rem}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="bar"><b>NUMBER<span style="color:var(--gold)">ARCADE</span></b><a class="home" href="index.html">Home</a></div>
+  <section class="hero"><div class="eyebrow">Number Arcade • Virtual Credits</div><h1>🎯 Quick Pick</h1><p>Choose a game, pick your number and join its independent draw. Every Quick Pick game has its own round, tickets, price, draw and prizes, while your account and virtual-credit wallet work across them all.</p></section>
+
+  <div class="bar"><strong>Choose a Quick Pick game</strong><span id="gameCount" class="muted"></span></div>
+  <nav id="tabs" class="tabs" aria-label="Quick Pick games"></nav>
+
+  <section id="gamePanel" class="panel"></section>
+
+  <section class="panel">
+    <div class="section-title"><h3>🎟 My Quick Picks</h3><span id="myCount" class="pill">Sign in to see your tickets</span></div>
+    <div id="myPicks" class="mine-list"></div>
+  </section>
+
+  <section class="panel">
+    <div class="section-title"><h3>🏆 Recent Quick Pick Results</h3><span class="pill">Latest rounds</span></div>
+    <div id="results" class="results"><div class="empty">Results will appear here after completed draws.</div></div>
+  </section>
+
+  <section class="panel"><div class="section-title"><h3>How Quick Pick works</h3></div><div class="steps"><div class="step"><b>01</b>Choose a game</div><div class="step"><b>02</b>Pick an available number</div><div class="step"><b>03</b>Review your credits</div><div class="step"><b>04</b>Confirm your ticket</div><div class="step"><b>05</b>Check the draw result</div></div><p class="how">Tickets are permanently assigned to the selected round. Prizes and draw behavior are controlled by the game's configuration. Credits shown here are virtual game points only.</p></section>
+  <p id="msg" class="msg"></p>
+</main>
+
+<div id="modal" class="modal"><div class="modal-card"><h2>Confirm ticket</h2><div id="modalGame" class="muted"></div><div id="modalNumber" class="number"></div><div id="modalDetails" class="muted"></div><div class="actions"><button id="confirm" class="btn">Confirm Purchase</button><button id="cancel" class="btn secondary">Cancel</button></div></div></div>
+
+<script type="module">
+import{createClient}from'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import'./account.js';
+const sb=createClient('https://uesymduyouwdrjedzqfr.supabase.co','sb_publishable_6uWbMVr4O7NEfPLFBPpejQ_rnpcR2M2');
+const $=id=>document.getElementById(id),fmt=n=>Number(n||0).toLocaleString();
+const order=['quick-pick-10','quick-pick-20','quick-pick-50','quick-pick-100','quick-pick-lucky-3'];
+const icons={'quick-pick-10':'⚡','quick-pick-20':'🔥','quick-pick-50':'🎯','quick-pick-100':'💎','quick-pick-lucky-3':'🍀'};
+let configs=new Map(),selected=null,rounds=new Map(),ticketMap=new Map(),session=null,pending=null;
+
+function configList(){return order.map(code=>{const c=configs.get(code)||{};return{code,c}})}
+function prize(round){const mode=round?.prize_mode||'fixed',fixed=Number(round?.fixed_prize||0),seed=Number(round?.jackpot_seed||0),collected=Number(round?.total_collected||0),pct=Number(round?.progressive_percent||0);if(mode==='progressive')return Math.floor(seed+collected*pct/100);if(mode==='both')return Math.floor(fixed+seed+collected*pct/100);return fixed}
+function setMsg(t=''){ $('msg').textContent=t }
+function availableGames(){return configList().filter(x=>x.c.enabled!==false&&x.c.mode!=='pick3')}
+
+async function loadConfigs(){
+ const r=await sb.from('game_config').select('game,config').eq('scope','game').in('game',order);
+ if(r.error)throw r.error;configs=new Map((r.data||[]).map(x=>[x.game,x.config||{}]));
+ renderTabs();
+}
+function renderTabs(){
+ const all=configList(), active=availableGames();
+ $('gameCount').textContent=active.length?`${active.length} game${active.length===1?'':'s'} available`: 'No games currently open';
+ $('tabs').innerHTML=all.map(({code,c})=>{const enabled=c.enabled!==false&&c.mode!=='pick3';return `<button class="tab ${code===selected?'active':''} ${enabled?'':'disabled'}" data-code="${code}" ${enabled?'':'disabled'}>${icons[code]||'🎲'} ${c.title||code}</button>`}).join('');
+ document.querySelectorAll('.tab:not(:disabled)').forEach(b=>b.onclick=()=>selectGame(b.dataset.code));
+ if(!selected||!active.some(x=>x.code===selected))selected=active[0]?.code||null;
+ document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.code===selected));
+}
+
+async function ensureRound(code){
+ const r=await sb.rpc('ensure_quick_pick_round',{p_game_code:code});
+ if(r.error)throw r.error;return r.data;
+}
+async function loadTickets(round){
+ if(!round)return[];const r=await sb.from('lottery_tickets').select('ticket_no,user_id,created_at').eq('round_id',round.id).order('ticket_no');
+ if(r.error)throw r.error;return r.data||[];
+}
+async function selectGame(code){selected=code;renderTabs();$('gamePanel').innerHTML='<div class="empty">Loading game…</div>';setMsg('');try{const r=await ensureRound(code);rounds.set(code,r);ticketMap.set(code,await loadTickets(r));renderGame()}catch(e){$('gamePanel').innerHTML=`<div class="empty"><strong>Unable to load this game</strong>${e.message||'Please try again.'}</div>`}}
+
+function renderGame(){
+ const code=selected,r=rounds.get(code),c=configs.get(code)||{},tickets=ticketMap.get(code)||[];if(!r)return;
+ const sold=tickets.length,total=Number(r.ticket_count||c.ticket_count||0),pct=total?Math.min(100,sold/total*100):0,complete=sold>=total;
+ const status=complete?'DRAWING SOON':'LIVE';
+ $('gamePanel').innerHTML=`<div class="game-head"><div><div class="title-row"><div class="game-icon">${icons[code]||'🎲'}</div><div><h2>${c.title||code}</h2><div class="muted">${c.subtitle||'Number draw game'}</div></div></div></div><span class="status ${complete?'soon':'live'}">● ${status}</span></div><div class="stats"><div class="stat"><small>Round</small><b>#${r.round_no}</b></div><div class="stat"><small>Tickets</small><b>${sold} / ${total}</b></div><div class="stat"><small>Ticket price</small><b>${fmt(r.ticket_price)} cr</b></div><div class="stat"><small>Configured prize</small><b>${fmt(prize(r))} cr</b></div></div><div class="progress"><i style="width:${pct}%"></i></div><div class="play-note"><span>${complete?'This round is full. The configured draw process will settle it.':'Select any green number to purchase it.'}</span><span>${Math.max(0,total-sold)} available</span></div><div id="board" class="board"></div><div class="legend">Green = available · Red = sold · Gold = your ticket · The selected round is independent from every other Quick Pick tab.</div>`;
+ const board=$('board');board.innerHTML=Array.from({length:total},(_,i)=>{const n=i+1,t=tickets.find(x=>Number(x.ticket_no)===n);const mine=t&&session&&t.user_id===session.user.id;return `<button class="ticket ${t?(mine?'mine':'sold'):''}" ${t?'disabled':''} data-n="${n}">${String(n).padStart(total>999?4:2,'0')}</button>`}).join('');
+ board.querySelectorAll('.ticket:not(:disabled)').forEach(b=>b.onclick=()=>openBuy(Number(b.dataset.n)));
+}
+
+async function refreshSession(){session=(await sb.auth.getSession()).data.session;await loadMyPicks();renderGame()}
+async function openBuy(n){
+ if(!session){window.NumberArcadeAuth?.open?.();setMsg('Please sign in to buy a Quick Pick ticket.');return}
+ const r=rounds.get(selected),w=await sb.from('wallets').select('balance').eq('user_id',session.user.id).maybeSingle();const balance=Number(w.data?.balance||0),price=Number(r.ticket_price||0);pending={game:selected,number:n};$('modalGame').textContent=(configs.get(selected)?.title||selected)+` · Round #${r.round_no}`;$('modalNumber').textContent='#'+String(n).padStart(2,'0');$('modalDetails').textContent=`Ticket price: ${fmt(price)} credits · Balance: ${fmt(balance)} · After purchase: ${fmt(balance-price)} credits`;$('confirm').disabled=balance<price;$('confirm').textContent=balance<price?'Insufficient credits':'Confirm Purchase';$('modal').classList.add('show')
+}
+$('cancel').onclick=()=>{$('modal').classList.remove('show');pending=null};
+$('confirm').onclick=async()=>{if(!pending)return;const game=pending.game;$('confirm').disabled=true;setMsg('Purchasing…');const r=await sb.rpc('buy_quick_pick_ticket',{p_game_code:game,p_ticket_no:pending.number});if(r.error){setMsg(r.error.message||'Purchase failed.');$('confirm').disabled=false;return}$('modal').classList.remove('show');pending=null;setMsg('Ticket purchased successfully.');const rr=rounds.get(game);ticketMap.set(game,await loadTickets(rr));renderTabs();renderGame();await loadMyPicks()};
+
+async function loadMyPicks(){
+ if(!session){$('myCount').textContent='Sign in to see your tickets';$('myPicks').innerHTML='<div class="empty"><strong>Your Quick Picks will appear here</strong>Sign in and your active tickets across all Quick Pick games will be summarized in one place.</div>';return}
+ const ids=[...rounds.values()].map(r=>r.id).filter(Boolean);let rows=[];
+ for(const [code,r] of rounds){const ts=ticketMap.get(code)||[];ts.filter(t=>t.user_id===session.user.id).forEach(t=>rows.push({code,r,t}))}
+ $('myCount').textContent=`${rows.length} active ticket${rows.length===1?'':'s'}`;
+ $('myPicks').innerHTML=rows.length?rows.map(x=>`<div class="mine-item"><div><b>${icons[x.code]||'🎲'} ${configs.get(x.code)?.title||x.code}</b><div class="muted">Round #${x.r.round_no} · Number #${String(x.t.ticket_no).padStart(2,'0')}</div></div><span class="pill">${fmt(x.r.ticket_price)} cr</span></div>`).join(''):'<div class="empty"><strong>No active Quick Picks yet</strong>Choose a green number above to join a round.</div>';
+}
+
+async function loadResults(){
+ // Public result data is intentionally read from completed rounds only. If the project exposes lottery_draws, show the latest draws; otherwise keep a useful empty state.
+ const r=await sb.from('lottery_draws').select('round_id,winning_ticket_no,drawn_at').order('drawn_at',{ascending:false}).limit(8);
+ if(r.error){$('results').innerHTML='<div class="empty">Completed draw results will appear here.</div>';return}
+ const items=r.data||[];
+ if(!items.length){$('results').innerHTML='<div class="empty">No completed Quick Pick draws yet. Your results will appear here after the first draw.</div>';return}
+ const ids=[...new Set(items.map(x=>x.round_id))];const rr=await sb.from('lottery_rounds').select('id,game_code,round_no').in('id',ids);const rm=new Map((rr.data||[]).map(x=>[x.id,x]));
+ $('results').innerHTML=items.map(x=>{const q=rm.get(x.round_id)||{};const c=configs.get(q.game_code)||{};return `<div class="result-item"><div><b>${icons[q.game_code]||'🎯'} ${c.title||q.game_code||'Quick Pick'}</b><div class="muted">Round #${q.round_no??'—'} · Winning number #${String(x.winning_ticket_no??'—').padStart(2,'0')}</div></div><span class="pill">${x.drawn_at?new Date(x.drawn_at).toLocaleString():''}</span></div>`}).join('');
+}
+
+function renderEmpty(){
+ $('tabs').innerHTML=configList().map(({code,c})=>`<button class="tab disabled" disabled>${icons[code]||'🎲'} ${c.title||code}</button>`).join('');
+ $('gameCount').textContent='No games currently open';
+ $('gamePanel').innerHTML=`<div class="coming"><div class="big">🎯</div><h2>Quick Pick is getting ready</h2><p>There are no Quick Pick games open right now. When the administrator enables a game, it will automatically appear here — no new page or app update is required.</p><button class="btn" onclick="location.reload()">Check Again</button><div class="coming-grid">${configList().map(({code,c})=>`<div class="coming-card"><b>${icons[code]||'🎲'} ${c.title||code}</b><span class="muted">${c.subtitle||'Coming soon'}</span></div>`).join('')}</div></div>`;
+}
+
+(async()=>{try{await loadConfigs();if(availableGames().length){selected=availableGames()[0].code;renderTabs();await Promise.all(availableGames().map(async x=>{try{const r=await ensureRound(x.code);rounds.set(x.code,r);ticketMap.set(x.code,await loadTickets(r))}catch(e){console.warn(x.code,e)}}));renderTabs();renderGame()}else renderEmpty();session=(await sb.auth.getSession()).data.session;await loadMyPicks();await loadResults()}catch(e){$('gamePanel').innerHTML=`<div class="empty"><strong>Quick Pick is temporarily unavailable</strong>${e.message||'Please refresh and try again.'}</div>`}}
+)();
+sb.auth.onAuthStateChange(()=>setTimeout(async()=>{session=(await sb.auth.getSession()).data.session;await loadMyPicks();renderGame()},0));
+</script>
+</body></html>
